@@ -1,0 +1,18 @@
+gfxmenu /message
+
+title Boot from hard drive
+map (hd0) (hd1)
+map (hd1) (hd0)
+chainloader (hd0)+1
+rootnoverify (hd0)
+
+title Utilities
+configfile /utilities.lst
+
+title Parted Magic 2017 64-Bit\n
+set iso=/images/pmagic_2017_06_12.iso
+map %iso% (0xff)
+map --hook
+root (0xff)
+kernel /pmagic/bzImage64 edd=off load_ramdisk=1 prompt_ramdisk=0 rw vga=normal loglevel=9 max_loop=256 vmalloc=256MiB iso-scan/filename=%iso%
+initrd /pmagic/initrd.img /pmagic/fu.img /pmagic/m64.img

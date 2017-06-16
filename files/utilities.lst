@@ -1,0 +1,10 @@
+gfxmenu /message
+
+title Return to main menu
+configfile /menu.lst
+
+title Memtest86+ v5.01
+map --mem /images/memtest86+_v5.01.iso (0xff)
+map --hook
+chainloader (0xff)
+rootnoverify (0xff)
