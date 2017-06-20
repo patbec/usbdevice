@@ -23,8 +23,7 @@ mkdir usbfiles
 
 Das Speichermedium löschen und ein NTFS Dateisystem erstellen, als Partitionstabelle nehmen wir **msdos**.
 
-NTFS bietet die größtmögliche kompatibilität zu anderen Betriebssystemen, es werden aber auch andere Dateisysteme wie **FAT12\FAT16\FAT32**, **exFAT** oder **EXT2\EXT3\EXT4** unterstützt.
-
+NTFS bietet die größtmögliche kompatibilität zu anderen Betriebssystemen, es werden aber auch andere Dateisysteme wie **FAT12 \ FAT16 \ FAT32**, **exFAT** oder **EXT2 \ EXT3 \ EXT4** unterstützt.
 
 Nun die Grub4Dos Dateien herunterladen und entpacken, alternativ können die benötigten Dateien auch selbst kompiliert werden.
 
@@ -95,19 +94,41 @@ Hier eine Beispiel Auflistung von ISO-Abbildern mit den dazugehörigen **menu.ls
 
 [Parted Magic](https://partedmagic.com)
 ```
-title Parted Magic 2017 (64-Bit)\n
+title Parted Magic 2017 (64-Bit)
 set iso=/images/pmagic_2017_06_12.iso
 map %iso% (0xff)
 map --hook
 root (0xff)
-kernel /pmagic/bzImage64 edd=off load_ramdisk=1 prompt_ramdisk=0 rw vga=normal loglevel=9 max_loop=256 vmalloc=256MiB iso-scan/filename=%iso%
+kernel /pmagic/bzImage64 iso-scan/filename=%iso% quiet splash --
 initrd /pmagic/initrd.img /pmagic/fu.img /pmagic/m64.img
+```
+
+[Ubuntu](https://www.ubuntu.com/download/desktop)
+```
+title Ubuntu 16.04.2 LTS
+set iso=/images/ubuntu-16.04.2-desktop-amd64.iso
+map %iso% (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz.efi file=/cdrom/preseed/ubuntu.seed boot=casper iso-scan/filename=%iso% quiet splash --
+initrd /casper/initrd.lz
+```
+
+[BackBox](https://backbox.org/download)
+```
+title BackBox Linux 4.7
+set iso=/images/backbox-4.7-amd64.iso
+map %iso% (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/cdrom/preseed/backbox.seed iso-scan/filename=%iso% quiet splash --
+initrd /casper/initrd.gz
 ```
 
 [Microsoft Windows PE 10.0](https://msdn.microsoft.com/de-de/library/windows/hardware/dn898560(v=vs.85).aspx)
 ```
 title Microsoft Windows PE 10.0
-map --mem /images/winpe_v10.0.iso (0xff)
+map --mem /images/WinPE_v10.0_amd64.iso (0xff)
 map --hook
 chainloader (0xff)
 rootnoverify (0xff)
