@@ -9,10 +9,10 @@ rootnoverify (hd0)
 title Utilities
 configfile /utilities.lst
 
-title Parted Magic 2017 64-Bit\n
+title Parted Magic 2017 64-Bit
 set iso=/images/pmagic_2017_06_12.iso
 map %iso% (0xff)
 map --hook
 root (0xff)
-kernel /pmagic/bzImage64 edd=off load_ramdisk=1 prompt_ramdisk=0 rw vga=normal loglevel=9 max_loop=256 vmalloc=256MiB iso-scan/filename=%iso%
+kernel /pmagic/bzImage64 iso-scan/filename=%iso% quiet splash --
 initrd /pmagic/initrd.img /pmagic/fu.img /pmagic/m64.img
