@@ -1,6 +1,6 @@
-# Schöner Booten mit GRUD4DOS
+# Schöner Booten mit GRUB4DOS
 
-![Screenshot GRUD4DOS](https://raw.githubusercontent.com/patbec/usbdevice/master/screenshot-grub4dos.png)
+![Screenshot GRUB4DOS](https://raw.githubusercontent.com/patbec/usbdevice/master/screenshot-grub4dos.png)
 
 ## Getting Started
 
@@ -21,9 +21,9 @@ Zuerst erstellen wir einen Ordner mit dem wir arbeiten werden
 mkdir usbfiles
 ```
 
-Das Speichermedium löschen und ein NTFS Dateisystem erstellen, als Partitionstabelle nehmen wir **msdos**.
+Das Speichermedium löschen und ein NTFS Dateisystem erstellen, als Partitionstabelle nehmen wir **msdos**. Für diesen Schritt bietet sich das Programm [GParted](https://wiki.ubuntuusers.de/GParted/) an.
 
-NTFS bietet die größtmögliche kompatibilität zu anderen Betriebssystemen, es werden aber auch andere Dateisysteme wie **FAT12 \ FAT16 \ FAT32**, **exFAT** oder **EXT2 \ EXT3 \ EXT4** unterstützt.
+exFAT bietet die größtmögliche Kompatibilität zu anderen Betriebssystemen, es werden aber auch andere Dateisysteme wie **FAT12 \ FAT16 \ FAT32**, **NTFS** oder **EXT2 \ EXT3 \ EXT4** unterstützt.
 
 Nun die Grub4Dos Dateien herunterladen und entpacken, alternativ können die benötigten Dateien auch selbst kompiliert werden.
 
@@ -57,7 +57,7 @@ Es werden noch diese zusätzlichen Dateien benötigten
 git clone https://github.com/patbec/usbdevice
 sudo cp -r usbdevice/files/* /media/<Pfad zur Partition>
 
-# Ordner für Dokumente erstellen (optional)
+# Ordner für eigene Dokumente erstellen (optional)
 sudo mkdir /media/<Pfad zur Partition>/Dokumente
 ```
 
@@ -85,7 +85,9 @@ Der USB Stick sollte nun in etwa so aussehen:
 Glückwunsch!
 
 
-Zum testen kann das ganze mit einer VHD in einer VM durchgeführt werden, es wird eine Sicherung empfohlen um es später auf einem anderen Gerät wiederherstellen zu können.
+Zum testen kann das ganze mit einer VHD in einer VM durchgeführt werden. Es wird empfohlen eine Sicherung zu erstellen, um diese bei Bedarf auf einem anderen Gerät wiederherstellen zu können.
+
+Diese Anleitung wurde mit Debain 8.0 und Ubuntu 16 LTS getestet.
 
 ## Beispiele
 
@@ -142,6 +144,26 @@ map --hook
 chainloader (0xff)
 rootnoverify (0xff)
 ```
+
+## Fehlerbehandlung
+
+```Missing Grub```
+
+Grub wurde nicht oder unvollständig in den Speicher geladen.
+Mit dem nächsten Schritt kann überprüft werden ob 'bootlace.com' den MBR vollständig geschrieben hat.
+
+```
+# MBR mit Partitionstabelle sichern (1MB Dump)
+sudo dd if=/dev/<Laufwerk> of=vm_disk.mbr bs=512 count=2048
+```
+Die Datei 'vm_disk.mbr' kann mithilfe von 'cmp' oder einem Hex-Editor mit 'grldr.mbr' verglichen werden.
+
+```
+# MBR manuell auf das angegebene Laufwerk schreiben
+sudo dd if=grub4dos-0.4.6a/grldr.mbr  of=/dev/<Laufwerk> bs=446 count=1
+```
+
+Bei der Benutzung von VirtualBox sollte zusätzlich die Erweiterung [VBox+DavidB's VMUB utility](http://www.rmprepusb.com/tutorials/how-to-boot-from-usb-under-vmware-server) verwendet werden, da es sonst zu Problemen beim schreiben auf USB-Geräten kommt.
 
 ## Autor
 
