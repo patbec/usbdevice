@@ -127,6 +127,19 @@ kernel /casper/vmlinuz file=/cdrom/preseed/backbox.seed iso-scan/filename=%iso% 
 initrd /casper/initrd.gz
 ```
 
+[Tails](http://dl.amnesia.boum.org/tails/stable/tails-amd64-3.3/)
+```
+title Tails 3.3
+set ISO=/images/tails-amd64-3.3.iso
+ls %ISO% > nul || find --set-root --devices=hf %ISO%
+map %ISO% (0xff) || map --mem %ISO% (0xff) || map --mem --heads=0 --sectors-per-track=0 %ISO% (0xff)
+map --hook
+root (0xff)
+kernel /live/vmlinuz findiso=%ISO% boot=live config fromiso=%ISO% noprompt timezone=Etc/UTC block.events_dfl_poll_msecs=1000 splash nox11autologin module=Tails quiet splash
+initrd /live/initrd.img
+root (bd)
+```
+
 [Microsoft Windows PE 10.0](https://msdn.microsoft.com/de-de/library/windows/hardware/dn898560(v=vs.85).aspx)
 ```
 title Microsoft Windows PE 10.0
